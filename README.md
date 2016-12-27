@@ -62,6 +62,7 @@ The Node.js Driver
 - Sort, Skip, and Limit in the Node.js Driver
 - insertOne() and insertMany() in the Node.js Driver
 - deleteOne() and deleteMany() in the Node.js Driver
+- Query operators such as : $, $in, $incr, $push, $pull, $near, Geo-operators
 
 Schema Design
 -------------
@@ -110,6 +111,9 @@ Indexes and Performance
 - Mongostat
 - Sharding Overview
 
+# Medium-level
+
+
 The Aggregation Framework
 -------------------------
 
@@ -124,9 +128,45 @@ The Aggregation Framework
 - Introduction to $group
 - _id in $group Stages
 - $group vs. $project
-- Query operators such as : $, $in, $incr, $push, $pull, $near, Geo-operators
+
+
+Moongoose
+---------
+
+- Save/delete triggers (ref:mongoose)
+- Debugging
 
 
 
+# Advance-level
 
+Application Engineering
+-----------------------
+- Write Concern
+- Network Errors
+- Introduction to Replication
+- Replica Set Elections
+- Write Consistency
+- Creating a Replica Set
+- Replica Set Internals
+- Failover and Rollback
+- Connecting to a Replica Set from the Node.js Driver
+- Failover in the Node.js Driver
+- Write Concern Revisited
+- Read Preferences
+- Review of Implications of Replication
+- Introduction to Sharding
+- Building a Sharded Environment
+- Implications of Sharding
+- Sharding + Replication
+- Choosing a Shard Key
 
+Security and Authentication
+---------------------------
+
+- capped collection
+- security: user authentication
+- CAP(Consistency Availability Partitioning) theorem
+- Asynchronous development using callback/Promise mechanism
+
+   
