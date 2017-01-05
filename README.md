@@ -1,10 +1,3 @@
-# MongoDB4Node.jsDevelopers
-This course is for learning mongoDB from scratch with for Node.js Developers
-
-# Prerquisites:
-* Basic Java script 
-* Relational database understanding (any of MSSQL, MYSql, Oracle)
-
 # What is MongoDB:
 * MongoDB is an open source database that uses a document-oriented data model.
 
@@ -12,26 +5,29 @@ This course is for learning mongoDB from scratch with for Node.js Developers
 
 * Like other NoSQL databases, MongoDB supports dynamic schema design, allowing the documents in a collection to have different fields and structures. The database uses a document storage and data interchange format called BSON, which provides a binary representation of JSON-like documents. Automatic sharding enables data in a collection to be distributed across multiple systems for horizontal scalability as data volumes increase.
 
+# MongoDB for Node.js Developers
+* This course is for learning mongo DB from scratch with Node.js.
+
+# Prerequisites:
+* Should be comfortable with use of callbacks in JavaScript.
+
+# About this course
+* Learn everything you need to know to get started building a MongoDB-based app. This course will go over basic installation, JSON, schema design, querying, insertion of data, indexing and working with the mongoose. 
+
+# Objective
+* After completing this course, you should have a good understanding as to how applications are built on top of MongoDB using Node.js
+
 # Course Duration:
- this is 7 weeks course. This is devided into 3 levels.
+* This is 8 weeks course. This is divided into 3 levels.
  
 # Beginner Level
 Overview
 --------
-
 - Overview of Building an App with MongoDB
 - Installing MongoDB (Linux)
-- Whats is JSON and BSON
+- What’s is JSON and BSON
 - Introduction to Creating and Reading Documents
-- Installing Node.js
-- Hello World on Node.js
-- Introduction to npm
-- Intro to the Node.js Driver
-- Hello World using Express
-- Hello World using Templates
-- All Together Now
-- Express: Handling GET Requests
-- Express: Handling POST Requests
+- What is ObjectId
 
 
 CRUD Operations
@@ -46,22 +42,6 @@ CRUD Operations
 - Regex Operator
 - Array Operators
 - Updating Documents
- 
- 
-
-The Node.js Driver
-------------------
- 
-- find() and Cursors in the Node.js Driver
-- Projection in the Node.js Driver   
-- The CrunchBase Dataset
-- Query Operators in the Node.js Driver
-- $regex in the Node.js Driver
-- Dot Notation in the Node.js Driver
-- Dot Notation on Embedded Documents in Arrays
-- Sort, Skip, and Limit in the Node.js Driver
-- insertOne() and insertMany() in the Node.js Driver
-- deleteOne() and deleteMany() in the Node.js Driver
 - Query operators such as : $, $in, $incr, $push, $pull, $near, Geo-operators
 
 Schema Design
@@ -70,8 +50,8 @@ Schema Design
 - MongoDB Schema Design
 - Relational Normalization
 - Modeling a Blog in Documents
-- Living Without Constraints
-- Living Without Transactions
+- Living without Constraints
+- Living without Transactions
 - One to One Relations
 - One to Many Relations
 - Many to Many Relations
@@ -79,6 +59,39 @@ Schema Design
 - Benefits of Embedding
 - Trees
 - When to Denormalize
+
+ 
+Node.js Fundamentals
+--------------------
+
+- Section Intro 
+- Using Require 
+- Requiring Your Own Files        
+- Using 3rd Party Modules        
+- Introduction to npm
+- Hello World using koa
+- Koa: Handling GET Requests
+- Koa: Handling POST Requests 
+
+The Mongoose ORM
+----------------
+
+* Setting Up Mongoose
+* Validators, Types, and Defaults
+* Installing Postman
+* Resource Creation Endpoint - POST /todos
+* Testing POST /todos
+* List Resources - GET /todos
+* Testing GET /todos
+* Mongoose Queries and ID Validation
+* Getting an Individual Resource - GET /todos/:id
+* Testing GET /todos/:id
+* Deploy API to Heroku
+* Postman Environments
+* Delete a Resource - DELETE /todos/:id
+* Testing DELETE /todos/:id
+* Updating a Resource - PATCH /todos/:id
+* Testing PATCH /todos/:id
 
 Indexes and Performance
 -----------------------
@@ -98,7 +111,7 @@ Indexes and Performance
 - Explain: Verbosity
 - Covered Queries
 - When is an Index Used?
-- How Large is Your Index?
+- How large is Your Index?
 - Number of Index Entries
 - Geospatial Indexes
 - Geospatial Spherical
@@ -130,7 +143,7 @@ The Aggregation Framework
 - $group vs. $project
 
 
-Moongoose
+Mongoose
 ---------
 
 - Save/delete triggers (ref:mongoose)
@@ -142,6 +155,7 @@ Moongoose
 
 Application Engineering
 -----------------------
+
 - Write Concern
 - Network Errors
 - Introduction to Replication
@@ -165,8 +179,7 @@ Security and Authentication
 ---------------------------
 
 - capped collection
-- security: user authentication
-- CAP(Consistency Availability Partitioning) theorem
+- Security: user authentication
+- CAP (Consistency Availability Partitioning) theorem
 - Asynchronous development using callback/Promise mechanism
-
-   
+ 
