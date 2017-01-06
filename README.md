@@ -18,7 +18,7 @@
 * After completing this course, you should have a good understanding as to how applications are built on top of MongoDB using Node.js
 
 # Course Duration:
-* This is 8 weeks course. This is divided into 3 levels.
+* This is an 8 weeks course and divided into 3 levels.
  
 # Beginner Level
 Overview
