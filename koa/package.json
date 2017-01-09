@@ -1,0 +1,28 @@
+{
+  "name": "koa-examples",
+  "version": "1.0.0",
+  "description": "This is having simple koa routing exaples",
+  "main": "app.js",
+  "dependencies": {
+    "koa": "*",
+    "koa-router": "^5.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/girishgupta211/MongoDBWithNode.js.git"
+  },
+  "keywords": [
+    "koa",
+    "koa-router"
+  ],
+  "author": "Girish Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/girishgupta211/MongoDBWithNode.js/issues"
+  },
+  "homepage": "https://github.com/girishgupta211/MongoDBWithNode.js#readme"
+}
