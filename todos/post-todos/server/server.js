@@ -13,6 +13,7 @@ app.use(parser());
 var route = new router({ prefix : '/v1' });
 route.get('/todo', getTodo);
 route.post('/todo', updateTodo);
+route.del('/todo/:id', deleteTodo);
 
 
 app.use(route.routes());
@@ -42,8 +43,36 @@ function* getTodo(next){
     this.type = 'json';
     this.status = 200;
     let res =  yield Todo.find({}).exec();
-    this.body = {'Welcome': 'todo  Application!!  ' , res };
+    this.body = {'data' : res };
 };
+
+
+function* deleteTodo(next) {
+    try {
+        let id = this.params.id;
+        console.log("Delete Todo : ", id);
+        //let todoStruct = yield Todo.findOneAndRemove({ _id: id });
+        let todoStruct = yield Todo.findByIdAndRemove(id);
+	if(!todoStruct){
+        	this.status = 404;
+		return;
+	}
+	//console.log("todoStruct" , todoStruct);	
+        this.body = todoStruct;
+        this.status = 200;
+        yield next;
+    } catch (error) {
+        console.log('Exception caught in deleting todo: ', error);
+        this.body = "Error in processing delete request";
+        this.status = 400;
+    }
+}
 
 /*  Curl request for post*/
 // curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "text" : "Request from postman completed" , "completed": false } ' "http://localhost:3000/v1/todo"
+
+/*  Curl request for Delete*/
+// curl -X DELETE -H "Cache-Control: no-cache" -H "Postman-Token: 163175cc-4598-c2ed-f52b-51b17d7cf6ac" -d '' "http://localhost:3000/v1/todo/5874ceb7618cbf4e2107433b"
+
+// Curl request for get
+//curl -X GET -H "Cache-Control: no-cache" -H "Postman-Token: 1750be43-025f-b52b-cf41-57a08d09a1c3" "http://localhost:3000/v1/todo"
