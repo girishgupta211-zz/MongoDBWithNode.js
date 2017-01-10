@@ -1,63 +1,86 @@
 var koa = require('koa');
 var parser = require('koa-better-body');
 var router = require('koa-router');
+const { ObjectID } = require('mongodb');
 
-var {Todo} = require('./models/todo');
-var {mongoose} = require('./db/mongoose');
+var { Todo } = require('./models/todo');
+var { mongoose } = require('./db/mongoose');
 
 var app = koa();
 
 // This is used to get parse request body such a json data in post request
 app.use(parser());
 
-var route = new router({ prefix : '/v1' });
+var route = new router({ prefix: '/v1' });
 route.get('/todo', getTodo);
-route.post('/todo', updateTodo);
+route.post('/todo', addTodo);
 route.del('/todo/:id', deleteTodo);
+route.patch('/todo/:id', updateTodo);
 
 
 app.use(route.routes());
 if (!module.parent) app.listen(3000);
 console.log('Hello World is Running on http://localhost:3000/');
 
+
 function* updateTodo(next) {
-        try {
-            console.log("this.request.fields" , this.request.fields)
-            let todoReq = this.request.fields;
-            let res =  yield (new Todo(todoReq)).save();
-            this.status = 200;
-            this.body = res;
-            yield next;
-        }
-        catch(err) {
-              console.log('Error while adding a todo');
-       	      this.body = "Error in todo post rquest";
-              this.status = 400;
-        }
+    try {
+        var id = this.params.id;
+        var body = this.request.fields;
+        console.log(body);
+        var res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
+        this.body = {res};
+        console.log(res);
+
+    } catch (err) {
+        console.log('Error while updating a todo');
+        this.body = "Error in todo patch rquest";
+        this.status = 400;
+    }
+}
+
+function* addTodo(next) {
+    try {
+        console.log("this.request.fields", this.request.fields)
+        let todoReq = this.request.fields;
+        let res = yield(new Todo(todoReq)).save();
+        this.status = 200;
+        this.body = res;
+        yield next;
+    } catch (err) {
+        console.log('Error while adding a todo');
+        this.body = "Error in todo post rquest";
+        this.status = 400;
+    }
 }
 
 
 
-function* getTodo(next){
-    console.log(this.request);
+function* getTodo(next) {
+    //console.log(this.request);
     this.type = 'json';
     this.status = 200;
-    let res =  yield Todo.find({}).exec();
-    this.body = {'data' : res };
+    let res = yield Todo.find({}).exec();
+    this.body = { 'data': res };
 };
 
 
 function* deleteTodo(next) {
     try {
         let id = this.params.id;
+        if (!ObjectID.isValid(id)) {
+            this.status = 404;
+            this.body = 'id is not valid ObjectId';
+            return;
+        }
         console.log("Delete Todo : ", id);
         //let todoStruct = yield Todo.findOneAndRemove({ _id: id });
         let todoStruct = yield Todo.findByIdAndRemove(id);
-	if(!todoStruct){
-        	this.status = 404;
-		return;
-	}
-	//console.log("todoStruct" , todoStruct);	
+        if (!todoStruct) {
+            this.status = 404;
+            return;
+        }
+        //console.log("todoStruct" , todoStruct);   
         this.body = todoStruct;
         this.status = 200;
         yield next;
