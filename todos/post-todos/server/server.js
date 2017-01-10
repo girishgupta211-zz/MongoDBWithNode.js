@@ -3,6 +3,7 @@ var parser = require('koa-better-body');
 var router = require('koa-router');
 
 var {Todo} = require('./models/todo');
+var {mongoose} = require('./db/mongoose');
 
 var app = koa();
 
@@ -20,14 +21,16 @@ console.log('Hello World is Running on http://localhost:3000/');
 
 function* updateTodo(next) {
         try {
-            console.log("this.request.fields" , this.request.fields , '\n\n\n\n\n')
+            console.log("this.request.fields" , this.request.fields)
             let todoReq = this.request.fields;
             let res =  yield (new Todo(todoReq)).save();
             this.status = 200;
             this.body = res;
+            yield next;
         }
         catch(err) {
               console.log('Error while adding a todo');
+       	      this.body = "Error in todo post rquest";
               this.status = 400;
         }
 }

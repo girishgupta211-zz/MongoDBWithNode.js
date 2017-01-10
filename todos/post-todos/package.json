@@ -12,9 +12,6 @@
     "koa": "*",
     "koa-router": "^5.4.0",
     "koa-better-body": "3.0.2",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "mongodb": "^2.2.5",
-    "mongoose": "^4.5.9"
+    "mongoose": "^4.5.10"
   }
 }
