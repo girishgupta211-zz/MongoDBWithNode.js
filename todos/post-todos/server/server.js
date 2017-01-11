@@ -1,9 +1,10 @@
 const koa = require('koa'),
-parser = require('koa-better-body'),
-router = require('koa-router'),
-{ ObjectID } = require('mongodb'),
-{ Todo } = require('./models/todo'),
-{ mongoose } = require('./db/mongoose');
+    parser = require('koa-better-body'),
+    router = require('koa-router'),
+    _ = require('lodash'),
+    { ObjectID } = require('mongodb'),
+    { Todo } = require('./models/todo'),
+    { mongoose } = require('./db/mongoose');
 
 let app = koa();
 
@@ -12,6 +13,7 @@ app.use(parser());
 
 let route = new router({ prefix: '/v1' });
 route.get('/todo', getTodo);
+route.get('/todo/:id', getTodoById)
 route.post('/todo', addTodo);
 route.del('/todo/:id', deleteTodo);
 route.patch('/todo/:id', updateTodo);
@@ -22,21 +24,50 @@ if (!module.parent) app.listen(3000);
 console.log('Hello World is Running on http://localhost:3000/');
 
 
-function* updateTodo(next) {
+function* getTodoById(next) {
     try {
         let id = this.params.id;
-        let body = this.request.fields;
-        console.log(body);
-        let res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
-        this.body = {res};
-        console.log(res);
+        if (!ObjectID.isValid(id)) {
+            this.status = 400;
+            this.body = 'todo Id is not a valid Object Id';
+            return;
+        }
 
+        let res = yield Todo.findById(id);
+        if (!res) {
+            this.status = 404;
+            this.body = `No data found for  ${id}`;
+            return;
+        }
+
+        this.status = 200;
+        this.body = { 'data': res };
+        yield next;
     } catch (err) {
-        console.log('Error while updating a todo');
-        this.body = "Error in todo patch rquest";
+        console.log('Error while getting todo', err);
+        this.body = "Error in todo get  rquest";
         this.status = 400;
     }
-}
+};
+
+
+
+
+function* getTodo(next) {
+    try {
+        let res = yield Todo.find({}).exec();
+        this.status = 200;
+        this.body = { 'data': res };
+        yield next;
+    } catch (err) {
+        console.log('Error while Getting  todo', err);
+        this.body = "Error while Getting  todo";
+        this.status = 400;
+    }
+};
+
+
+
 
 function* addTodo(next) {
     try {
@@ -47,21 +78,12 @@ function* addTodo(next) {
         this.body = res;
         yield next;
     } catch (err) {
-        console.log('Error while adding a todo');
+        console.log('Error while adding a todo', err);
         this.body = "Error in todo post rquest";
         this.status = 400;
     }
 }
 
-
-
-function* getTodo(next) {
-    //console.log(this.request);
-    this.type = 'json';
-    this.status = 200;
-    let res = yield Todo.find({}).exec();
-    this.body = { 'data': res };
-};
 
 
 function* deleteTodo(next) {
@@ -86,6 +108,36 @@ function* deleteTodo(next) {
     } catch (error) {
         console.log('Exception caught in deleting todo: ', error);
         this.body = "Error in processing delete request";
+        this.status = 400;
+    }
+}
+
+function* updateTodo(next) {
+    try {
+        let id = this.params.id;
+        let body = _.pick(this.request.fields, ["text", "completed"]);
+        if (!ObjectID.isValid(id)) {
+            this.status = 404;
+            this.body = 'id is not valid ObjectId';
+            return;
+        }
+
+        if (_.isBoolean(body.completed) && body.completed) {
+            body.completedAt = new Date().getTime();
+        } else {
+            body.completed = false;
+            body.completedAt = null;
+        }
+
+        console.log(body);
+        // If we do not pass {new: true}, this will return origional document. After passing {new : true}, it returns updated document.
+        let res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
+        this.body = { res };
+        console.log(res);
+
+    } catch (err) {
+        console.log('Error while updating a todo', err);
+        this.body = "Error in todo patch rquest";
         this.status = 400;
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "node-todo-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is simple CRUD operation in KOA through mongoose",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,7 @@
     "koa": "*",
     "koa-router": "^5.4.0",
     "koa-better-body": "3.0.2",
-    "mongoose": "^4.5.10"
+    "mongoose": "^4.5.10",
+    "lodash" : "latest"
   }
 }
