@@ -1,17 +1,16 @@
-var koa = require('koa');
-var parser = require('koa-better-body');
-var router = require('koa-router');
-const { ObjectID } = require('mongodb');
+const koa = require('koa'),
+parser = require('koa-better-body'),
+router = require('koa-router'),
+{ ObjectID } = require('mongodb'),
+{ Todo } = require('./models/todo'),
+{ mongoose } = require('./db/mongoose');
 
-var { Todo } = require('./models/todo');
-var { mongoose } = require('./db/mongoose');
-
-var app = koa();
+let app = koa();
 
 // This is used to get parse request body such a json data in post request
 app.use(parser());
 
-var route = new router({ prefix: '/v1' });
+let route = new router({ prefix: '/v1' });
 route.get('/todo', getTodo);
 route.post('/todo', addTodo);
 route.del('/todo/:id', deleteTodo);
@@ -25,10 +24,10 @@ console.log('Hello World is Running on http://localhost:3000/');
 
 function* updateTodo(next) {
     try {
-        var id = this.params.id;
-        var body = this.request.fields;
+        let id = this.params.id;
+        let body = this.request.fields;
         console.log(body);
-        var res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
+        let res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
         this.body = {res};
         console.log(res);
 
