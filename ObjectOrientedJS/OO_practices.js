@@ -359,3 +359,70 @@ var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
 
 console.log(descriptor);
 
+// Preventing Object Modification
+	// Preventing Extensions
+var person1 = {
+	name: "Bejoy"
+};
+
+console.log(Object.isExtensible(person1)); // true
+
+Object.preventExtensions(person1);
+
+console.log(Object.isExtensible(person1)); // false
+
+try {
+	person1.sayName = function() {
+		console.log(this.name);
+	};
+
+}
+catch(err) {
+	console.log(err); // [TypeError: Can't add property sayName, object is not extensible]
+}
+
+console.log("sayName" in person1); // false
+
+	// Sealing Objects
+	// Cannot add new properties, cant remove properties or change their types
+
+var person1 = {
+	name: "Bejoy"
+};
+
+console.log(Object.isExtensible(person1)); // true
+console.log(Object.isSealed(person1)); // false
+
+Object.seal(person1);
+console.log(Object.isExtensible(person1)); // false
+console.log(Object.isSealed(person1)); // true
+
+// adding new properties wont work
+
+try {
+	delete person1.name;	
+}
+catch(err) {
+	console.log(err); // Cannot delete prop name
+}
+
+var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
+
+console.log(descriptor);
+
+person1.name = "George";
+
+console.log(person1.name); // George 
+
+	// Freezing Objects
+	// Everything is frozen. Isn't extensible, configurable or writable.
+
+var person1 = {
+	name: "Bejoy"
+}
+
+Object.freeze(person1);
+
+var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
+
+console.log(descriptor);
