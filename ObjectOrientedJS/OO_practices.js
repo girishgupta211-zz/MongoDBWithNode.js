@@ -663,4 +663,101 @@ console.log(person1.constructor === Object); // true
 
 // Please read below discription even though it is long
 
-// Please read below discription even though it is long
+/*
+	Using the object literal notation to overwrite the prototype changed the constructor 
+	property so that it now points to Object instead of Person. This happened because 
+	the constructor property exists on the prototype, not on the object instance. When a function 
+	is created, its prototype property is created with a ­constructor property equal to the 
+	function. This pattern completely overwrites the prototype object, which means that constructor 
+	will come from the newly created (generic) object that was assigned to Person.prototype. 
+	To avoid this, restore the constructor property to a proper value when overwriting the prototype.
+*/
+
+function PersonWithConstructor(name) {
+	this.name = name;
+}
+
+PersonWithConstructor.prototype = {
+	constructor: PersonWithConstructor,
+
+	sayName: function() {
+		console.log(this.name);
+	},
+
+	toString: function() {
+		return "[Person" + this.name + "]";
+	}
+};
+
+var person1 = new PersonWithConstructor('Bejoy');
+
+console.log(person1 instanceof PersonWithConstructor); // true
+console.log(person1.constructor === PersonWithConstructor); // true
+console.log(person1.constructor === Object); // false
+
+// --> arrow represents direct relationship
+// --> X no direct relationship
+// instance  --> X constructor
+// instance  -->   prototype
+// prototype -->   constructor
+
+// An instance and its constructor are linked via the protype.
+
+// Changing Prototype
+
+// [[Prototype]] property just contains a pointer to the prototype.
+// Any changes to the prototype are immediately available on any instance referencing it.
+
+function PersonWithProtoChange(name) {
+	this.name = name;
+}
+
+PersonWithProtoChange.prototype = {
+	constructor: Person,
+
+	sayName: function() {
+		console.log(this.name);
+	},
+
+	toString: function() {
+		return "[Person" + this.name + "]";
+	}
+};
+
+var person1 = new PersonWithProtoChange("Bejoy");
+
+console.log("sayHi" in person1); // false
+
+// add a new method
+PersonWithProtoChange.prototype.sayHi = function() {
+	console.log("Hi");
+}
+
+person1.sayHi();  // outputs "Hi"
+
+// effects on sealed and frozen objects
+
+var person1 = new PersonWithProtoChange("Bejoy");
+
+Object.freeze(person1);
+
+PersonWithProtoChange.prototype.sayYolo = function() {
+	console.log("YOLO");
+}
+
+person1.sayYolo(); // "YOLO"
+
+// ex of built-in Object Prototypes
+
+Array.prototype.sum = function() {
+	return this.reduce(function(previous, current) {
+		return previous + current;
+	});
+};
+
+var numbers = [1,2,3,4,5];
+
+var result = numbers.sum();
+
+console.log(result); // 21
+
