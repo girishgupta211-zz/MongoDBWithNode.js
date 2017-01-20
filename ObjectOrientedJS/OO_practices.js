@@ -3,6 +3,8 @@
 
 'use strict';
 
+// always run in strict mode. It's a life saver.
+
 // Both var points to the same object
 var object1 = new Object();
 var object2 = object1;
@@ -415,7 +417,7 @@ person1.name = "George";
 console.log(person1.name); // George 
 
 	// Freezing Objects
-	// Everything is frozen. Isn't extensible, configurable or writable.
+	// Everything is frozen. Isn't extensible, configurable or writable (Oh! but is enumerable)
 
 var person1 = {
 	name: "Bejoy"
@@ -426,3 +428,103 @@ Object.freeze(person1);
 var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
 
 console.log(descriptor);
+
+// Constructors
+// Its a function that is used with new to create an object.
+// Constructor names should begin with capital letter.
+
+function Person() {
+	// intentionally empty 
+}
+
+var person1 = new Person();
+var person2 = new Person();
+
+// When no parameters are to be passed object can be created without brackets
+
+var person1 = new Person;
+
+console.log(person1 instanceof Person);
+
+// Every object instance is automatically ­created with a ­ constructor property 
+// that contains a reference to the constructor function that ­created it.
+
+console.log(person1.constructor); // Person
+
+// use instanceof instead of .constructor because constructor property can be overwritten 
+
+// constructor with properties
+
+function Person(name) {
+	this.name = name;
+	this.getName = function() {
+		console.log("line 459", this.name);
+	}
+}
+
+// There’s no need to return a value from the function because the new operator 
+// produces the return value.
+
+var person1 = new Person("Bejoy");
+var person2 = new Person("George");
+
+console.log(person1); // Person { name: 'Bejoy', getName: [Function] }
+
+person1.getName(); 
+
+function PersonWithObjectReturn(name) {
+	this.name = name;
+	this.getName = function() {
+		console.log(this.name);
+	}
+	return {};
+}
+
+function PersonWithPrimitiveReturn(name) {
+	this.name = name;
+	this.getName = function() {
+		 console.log(this.name);
+	}
+	return 2;
+}
+
+// You can also explicitly call return inside of a constructor. If the returned value
+// is an object, it will be returned instead of the newly created object instance. If the
+// returned value is a primitive, the newly created object is used and the returned
+// value is ignored.
+
+var person3 = new PersonWithObjectReturn("I will cease to exist");
+var person4 = new PersonWithPrimitiveReturn("I will survive any odds");
+
+console.log(person3); // {} 
+console.log(person4.name); // I will survive any odds
+
+// Constructors with Object.defineProperty()
+
+function Person(name) {
+
+	Object.defineProperty(this, "name", {
+		get: function() {
+			return name;
+		},
+		set: function(newName) {
+			name = newName;
+		},
+		enumerable: true,
+		configurable: true
+	});
+
+	this.getName = function() {
+		console.log(this.name);
+	};
+}
+
+// always call constructors with new, otherwise risk changing the global object
+// instead of creating a new one.
+
+try {
+	var person1 = Person("Bejoy"); // missing "new"
+}
+catch(err) {
+	console.log(err);
+}
