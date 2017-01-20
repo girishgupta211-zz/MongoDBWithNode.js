@@ -526,5 +526,141 @@ try {
 	var person1 = Person("Bejoy"); // missing "new"
 }
 catch(err) {
-	console.log(err);
+	console.log(err); // Object.defineProperty called on non-object.
 }
+
+// An error occurs if you call the Person constructor in strict mode without using new .
+// This is because strict mode doesn’t assign this to the global object. Instead, this
+// remains undefined , and an error occurs whenever you attempt to create a property
+// on undefined.
+
+// Prototypes
+
+// Refer mdn for definition 
+
+var book = {
+	title: "the principles"
+};
+
+console.log("title" in book); // true
+console.log(book.hasOwnProperty("title")); // true
+console.log("hasOwnProperty" in book); // true
+console.log(book.hasOwnProperty("hasOwnProperty")); // false
+console.log(Object.prototype.hasOwnProperty("hasOwnProperty")); // true
+
+// Identifying a prototype property
+function hasPrototypeProperty(object, name) {
+	return name in object && !object.hasOwnProperty(name);
+}
+
+console.log(hasPrototypeProperty(book, "title")); // false
+console.log(hasPrototypeProperty(book, "hasOwnProperty")); // true
+
+// read the value of [[Prototype]]
+
+var object = {};
+var prototype = Object.getPrototypeOf(object);
+
+console.log(prototype === Object.prototype);  // true
+
+// checking if one object is property for another
+
+var object = {};
+
+console.log(Object.prototype.isPrototypeOf(object)); // true
+
+// When a property is read on an object, the JavaScript engine first
+// looks for an own property with that name. If the engine finds a correctly
+// named own property, it returns that value. If no own property with that
+// name exists on the target object, JavaScript searches the [[Prototype]]
+// object instead. If a prototype property with that name exists, the value
+// of that property is returned. If the search concludes without finding a
+// property with the correct name, undefined is returned.
+
+var object = {};
+
+console.log(object.toString()); // "[object Object]"
+
+object.toString = function() {
+	return "[object Custom]";
+};
+
+console.log(object.toString()); // "[object Custom]"
+
+// delete own property
+delete object.toString;
+
+console.log(object.toString()); // "[object Object]"
+
+// no effect - delete only works on own properties
+
+delete object.toString;
+console.log(object.toString()); // "[object Object]"
+
+// Using Prototypes with Constructors
+
+function PersonWithProto(name) {
+	this.name = name;
+}
+
+PersonWithProto.prototype.sayName = function() {
+	console.log(this.name);
+};
+
+var person1 = new PersonWithProto("Bejoy");
+var person2 = new PersonWithProto("George");
+
+console.log(person1.name); // "Bejoy"
+
+person1.sayName(); // "Bejoy"
+
+// be careful with reference types 
+
+function PersonWithRefType(name) {
+	this.name = name;
+}
+
+PersonWithRefType.prototype.sayName = function() {
+	console.log(this.name);
+};
+
+PersonWithRefType.prototype.favorites = [];
+
+var person1 = new PersonWithRefType("Bejoy");
+var person2 = new PersonWithRefType("George");
+
+person1.favorites.push("pizza");
+person2.favorites.push("chocolate");
+
+console.log(person1.favorites); // ['pizza', 'chocolate']
+console.log(person2.favorites); // ['pizza', 'chocolate']
+
+// the favorites property is defined on the prototype, they both point to same array
+
+// add multiple prototype with object literal
+
+function PersonWithObjLiteral(name) {
+	this.name = name;
+}
+
+PersonWithObjLiteral.prototype = {
+	sayName: function() {
+		console.log(this.name);
+	},
+
+	toString: function() {
+		return "[Person " + this.name + "]";
+	}
+};
+
+var person1 = new PersonWithObjLiteral("Bejoy");
+
+// but the above method has a side effect
+
+console.log(person1 instanceof PersonWithObjLiteral); // true
+console.log(person1.constructor === PersonWithObjLiteral); // false
+console.log(person1.constructor === Object); // true
+
+// Please read below discription even though it is long
+
+// Please read below discription even though it is long
