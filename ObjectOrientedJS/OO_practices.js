@@ -5,6 +5,8 @@
 
 // always run in strict mode. It's a life saver.
 
+// longer function names are taken wherever necessary because of javascripts function hoisting 
+
 // Both var points to the same object
 var object1 = new Object();
 var object2 = object1;
@@ -759,5 +761,280 @@ var numbers = [1,2,3,4,5];
 
 var result = numbers.sum();
 
-console.log(result); // 21
+console.log(result); // 15
+
+// Inheritance
+
+// Javascript approach for inheritance is called prototype chaining or prototypal inheritance.
+
+// All objects inherit from Object.prototype
+
+var book = {
+	title: "The principles"
+}
+
+var prototype = Object.getPrototypeOf(book);
+
+console.log(prototype === Object.prototype);
+
+// method defined in Object.prototype
+// hasOwnProperty()
+// propertyIsEnumerable()
+// isPrototypeOf()
+// valueOf()
+// toString()
+
+// Modifying Object.prototype
+// Shouldn't be done
+
+Object.prototype.add = function(value) {
+	return this + value;
+}
+
+console.log(book.add(4)); // "[object Object]5"
+
+console.log("title".add("end")); // "titleend"
+
+// Adding Object.prototype.add() causes all objects to have an add() method, whether or not it actually makes sense
+
+// problem: adds enumerable methods
+
+var empty = {};
+
+for (var property in empty) {
+	console.log(property); // outputs add
+}
+
+// its recommended to use hasOwnProperty() in for-in loops all the time
+
+for (var property in empty) {
+	if (empty.hasOwnProperty(property)) {
+		console.log(property);
+	}
+}
+
+// Object Inheritance
+// set new object's [[Prototype]] to object from which we have to inherit
+
+var book = {
+	title: "The Principles"
+}
+
+// is same as
+
+var book = Object.create(Object.prototype, {
+					title: {
+						configurable: true,
+						enumerable: true,
+						value: "The Principles",
+						writable: true
+					}
+			});
+
+// inherting from other objects
+
+var person1 = {
+	name: "Bejoy",
+	sayName: function() {
+		console.log(this.name);
+	}
+}
+
+var person2 = Object.create(person1, {
+	name: {
+		configurable: true,
+		enumerable: true,
+		value: "George",
+		writable: true
+	}
+});
+
+person1.sayName(); // "Bejoy"
+person2.sayName(); // "George"
+
+console.log(person1.hasOwnProperty("sayName")); // true
+console.log(person1.isPrototypeOf(person2)); // true
+console.log(person2.hasOwnProperty("sayName")); // false
+
+// When a property is accessed on an object, the JavaScript engine goes
+// through a search process. If the property is found on the instance (that is,
+// if it’s an own property), that property value is used. If the property is not
+// found on the instance, the search continues on [[Prototype]] . If the property
+// is still not found, the search continues to that object’s [[Prototype]] , and
+// so on until the end of the chain is reached. That chain usually ends with
+// Object.prototype , whose [[Prototype]] is set to null .
+
+// Creating object with a null [[Prototype]]
+
+var objWithNullProto = Object.create(null);
+
+console.log("toString" in objWithNullProto); // false
+console.log("valueOf" in objWithNullProto); // false
+
+// Constructor Inheritance
+
+// you write this
+function YourConstructor() {
+	// initialization
+}
+
+// JavaScript engine does this for you behind the scenes
+
+YourConstructor.prototype = Object.create(Object.prototype, {
+								constructor: {
+									configurable: true,
+									enumerable: true,
+									value: YourConstructor,
+									writable: true
+								}
+							});
+
+// prototype property is writable, can change the prototype chain by overwriting it.
+
+function Rectangle(length, width) {
+	this.length = length;
+	this.width = width;
+}
+
+Rectangle.prototype.getArea = function() {
+	return this.length * this.width;
+};
+
+Rectangle.prototype.toString = function() {
+	return "[Rectangle " + this.length + "x" + this.width + "]";
+};
+
+// inherits from Rectangle
+
+function Square(size) {
+	this.length = size;
+	this.width = size;
+}
+
+Square.prototype = new Rectangle();
+Square.prototype.constructor = Square;
+Square.prototype.toString = function() {
+	return "[Square " + this.length + "x" + this.width + "]";
+}
+
+var rect = new Rectangle(5, 10);
+var square = new Square(6);
+
+console.log(rect.getArea());  // 50
+console.log(square.getArea()); // 36
+
+console.log(rect.toString()); // "[Rectangle 5x10]"
+console.log(square.toString()); // "[Square 6x6]"
+
+console.log(rect instanceof Rectangle); // true
+console.log(rect instanceof Object); // true
+	
+console.log(square instanceof Square); // true
+console.log(square instanceof Rectangle); // true
+console.log(square instanceof Object); // true
+ 
+ // the above example can be simplified by using Object.create()
+ 
+function Square2(size) {
+	this.length = size;
+	this.width = size;
+}
+
+// inherits from Rectangle
+
+Square2.prototype = Object.create(Rectangle.prototype, {
+						constructor: {
+							configurable: true,
+							enumerable: true,
+							value: Square,
+							writable: true
+						}
+					});
+
+Square2.prototype.toString = function() {
+	return "[Square " + this.length + "x" + this.width + "]";
+}
+
+// In this version of the code, Square.prototype is overwritten with a
+// new object that inherits from Rectangle.prototype , and the Rectangle
+// constructor is never called. That means you don’t need to worry about
+// causing an error by calling the constructor without arguments anymore.
+
+// Always make sure that you overwrite the prototype before adding properties to it,
+// or you will lose the added methods when the overwrite happens
+
+// Constructor Stealing
+
+function Rectangle(length, width) {
+	this.length = length;
+	this.width = length;
+}
+
+Rectangle.prototype.getArea = function() {
+	return this.length * this.width;
+};
+
+Rectangle.prototype.toString = function() {
+	return "[Rectangle " + this.length + "x" + this.width + "]"; 
+};
+
+// inherits from Rectangle
+function Square3(size) {
+	Rectangle.call(this, size, size);
+}
+
+Square3.prototype = Object.create(Rectangle.prototype, {
+						constructor: {
+							configurable: true,
+							enumerable: true,
+							value: square,
+							writable: true
+						}
+					});
+
+Square3.prototype.toString = function() {
+	return "[Square" + this.length + "x" + this.width + "]";
+}
+
+var square = new Square(6);
+
+console.log(square.length); // 6
+console.log(square.width); // 6
+console.log(square.getArea()); // 36
+
+// The above method is called pseudoclassical inheritance because it mimics classical inheritance 
+// from class-based languages.
+
+// Accessing Supertype Methods
+// in last example Squares toString() method shadows toString() method in prototype
+// suppose we want to access toString() method in supertyppe method
+// something like super.toString() in other class based languages
+
+// can directly access methods in supertype's prototype using either call() or apply()
+
+function Rectangle(length, width) {
+	this.length = length;
+	this.width = width; 
+}
+
+Rectangle.prototype.getArea = function() {
+	return this.length * this.width;
+};
+
+Rectangle.prototype.toString = function() {
+	return "[Rectangle " + this.length + "x" + this.height + "]";
+};
+
+// inherits from Rectangle
+
+function Square4(size) {
+	Rectangle.call(this, size, size);
+}
+
+// call the supertype method
+
+Square4.prototype.toString = function() {
+	var text = Rectangle.prototype.toString.call(this);
+	return text.replace("Rectangle", "Square");
+}
 
