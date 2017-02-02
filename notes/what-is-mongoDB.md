@@ -155,7 +155,7 @@ True or false? BSON plays the role of a canonical (i.e., "unique") representatio
    { "hello" : "world" }
 
 // BSON
-"\x16\x00\x00\x00\x02hello\x00
+  "\x16\x00\x00\x00\x02hello\x00
 \x06\x00\x00\x00world\x00\x00"
 
 
