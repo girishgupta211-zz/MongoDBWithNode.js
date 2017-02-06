@@ -110,28 +110,17 @@ e
 
 ```
 
-# JSON Quix #
+# JSON Quiz #
 Which of the following value types are defined by the JSON spec? Check all that apply.
 
-object
-array
-date
-string
-integer
-number
+* object
+* array
+* date
+* string
+* integer
+* number
 
 date and interger is not a valid data type
-
-
-# Application Overview: #
-
-* In this course we will have a nodejs server.
-* Nodejs is built in C++ and Controlled by  v8 JavaScript.
-* Many clients can interact with nodejs server and nodejs application will interact with MongoDB
-* MongoDB is written in C++ itself.
-* There is mongo shell that can also be used as adminstrative shell
-* mongo shell is also written in C++ and can be Controller by v8 bindings. This can be used for Debugging, configuration or querying stored data or other admintrative tasks.
-
 
 
 # What BSON #
@@ -144,7 +133,7 @@ MongoDB Driver converts JSON to BSON and stored in MongoDB.
 
 BOSN extends JSON with more data types like date, intergers, images , binary Electronics
 
-eg MongoDB does not support date, byte , double etc.
+*  MongoDB does not support date, byte , double etc.
 
 # Quiz #
 True or false? BSON plays the role of a canonical (i.e., "unique") representation of documents shared across all drivers and tools.
