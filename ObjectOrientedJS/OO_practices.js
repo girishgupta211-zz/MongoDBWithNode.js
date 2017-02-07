@@ -5,7 +5,7 @@
 
 // always run in strict mode. It's a life saver.
 
-// longer function names are taken wherever necessary because of javascripts function hoisting 
+// longer function names are taken wherever necessary because of javascript's function hoisting. 
 
 // Both var points to the same object
 var object1 = new Object();
@@ -58,10 +58,10 @@ console.log(Array.isArray(items)); // true
 
 // An object always evaluates to true even its a boolean false
 
-var found = new  Boolean(false);
+var found = new Boolean(false);
 
-if(found) {
-	console.log("found");
+if (found) { // evaluates to true
+    console.log("found");
 }
 
 // Most of the time, using primitive wrapper objects instead of primitives only leads to errors.
@@ -71,7 +71,7 @@ if(found) {
 // arguments is an array like structure. Arguments is not an instance of Array and Array.isArray(arguments) always returns false.
 
 function reflect(a, b) {
-	return a;
+    return a;
 }
 
 console.log(reflect.length); // returns no. of expected arguements
@@ -85,15 +85,15 @@ console.log(reflect.length); // returns no. of expected arguements
 // The call() Method
 
 function sayNameForAll(label) {
-	console.log(label + ":" + this.name);
+    console.log(label + ":" + this.name);
 }
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 }
 
 var person2 = {
-	name: "George"
+    name: "George"
 }
 
 var name = "Mathew";
@@ -117,13 +117,13 @@ sayNameForPerson2();
 
 // attaching a method to an object doesn't change 'this'
 person2.sayName = sayNameForPerson1;
-person2.sayName("person2"); 	// outputs "person2:Bejoy"
+person2.sayName("person2"); // outputs "person2:Bejoy"
 
 // Detecting Properties
 
 // unreliable
 if (person1.age) {
-	// do something with age
+    // do something with age
 }
 
 // reliable 
@@ -131,10 +131,10 @@ console.log("name" in person1); // true
 console.log("age" in person1); // false
 
 var person1 = {
-	name: "Bejoy",
-	sayName: function() {
-		console.log(this.name);
-	}
+    name: "Bejoy",
+    sayName: function() {
+        console.log(this.name);
+    }
 };
 
 console.log("sayName" in person1); // true
@@ -173,17 +173,17 @@ console.log(properties.propertyIsEnumerable("length")); // false
 // Accessor properties doesn't, instead define a function to call when the property is read or written
 
 var person1 = {
-	_name: "Bejoy",
+    _name: "Bejoy",
 
-	get name() {
-		console.log("Reading name");
-		return this._name;
-	},
+    get name() {
+        console.log("Reading name");
+        return this._name;
+    },
 
-	set name(value) {
-		console.log("Setting name to %s", value);
-		this._name = value;
-	}
+    set name(value) {
+        console.log("Setting name to %s", value);
+        this._name = value;
+    }
 }
 
 console.log(person1.name); // "Reading name" then "Bejoy"
@@ -192,17 +192,17 @@ person1.name = "President K"; // "Setting name to President K"
 // leading underscore is a common convention to indicate that the property is considered private, but its still public.
 
 // Property Attributes
-	// Common Attributes of Data and accessors. 
-		// Enumerable and Configurable
+// Common Attributes of Data and accessors. 
+// Enumerable and Configurable
 
 // By default all declared properties are enumerable and configurable
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 }
 
 Object.defineProperty(person1, "name", {
-	enumerable: false
+    enumerable: false
 });
 
 console.log("name" in person1); // true
@@ -212,14 +212,13 @@ console.log(person1.propertyIsEnumerable("name")); // false
 console.log(Object.keys(person1)); // []
 
 Object.defineProperty(person1, "name", {
-	configurable: false
+    configurable: false
 });
 
 try {
-	delete person1.name;
-}
-catch(err) {
-	console.log(err); // Cannot delete property 'name'
+    delete person1.name;
+} catch (err) {
+    console.log(err); // Cannot delete property 'name'
 }
 
 // When JavaScript is running in strict mode, attempting to delete a nonconfigurable
@@ -230,21 +229,20 @@ console.log("name" in person1); // true
 console.log(person1.name); // "Bejoy"
 
 try {
-	Object.defineProperty(person1, "name", {
-		configurable: true
-	});
-}
-catch(err) {
-	console.log(err); // [TypeError: Cannot redfine property: name]
+    Object.defineProperty(person1, "name", {
+        configurable: true
+    });
+} catch (err) {
+    console.log(err); // [TypeError: Cannot redfine property: name]
 }
 
 // Data Property Attributes
 
-	// Value
-	// Writable
+// Value
+// Writable
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 };
 
 // OR
@@ -252,10 +250,10 @@ var person1 = {
 var person1 = {};
 
 Object.defineProperty(person1, "name", {
-	value: "Bejoy",
-	enumerable: true,
-	configurable: true,
-	writable: true
+    value: "Bejoy",
+    enumerable: true,
+    configurable: true,
+    writable: true
 });
 
 // Defining a new property with Object.defineProperty() , it’s important to specify all 
@@ -263,62 +261,60 @@ Object.defineProperty(person1, "name", {
 
 var person1 = {};
 Object.defineProperty(person1, "name", {
-	value: "Bejoy"
+    value: "Bejoy"
 });
 
 console.log("name" in person1); // true
 
 console.log(person1.propertyIsEnumerable("name")); // false
 
-try{
-	delete person1.name;
-}
-catch(err) {
-	console.log("Throws err, cannot delete");
+try {
+    delete person1.name;
+} catch (err) {
+    console.log("Throws err, cannot delete");
 }
 
-try{
-	person1.name = "George";
-}
-catch(err) {
-	console.log(err); // [TypeError: Cannot assign to read only property 'name']
+try {
+    person1.name = "George";
+} catch (err) {
+    console.log(err); // [TypeError: Cannot assign to read only property 'name']
 }
 
 // Accessor Property Attributes
-	// Get
-	// Set
+// Get
+// Set
 
 var person1 = {
-	_name: "Bejoy",
+    _name: "Bejoy",
 
-	get name() {
-		console.log("Reading name");
-		return this._name;
-	},
+    get name() {
+        console.log("Reading name");
+        return this._name;
+    },
 
-	set name(value) {
-		console.log("Setting name to %s", value);
-		this._name = value;
-	}
+    set name(value) {
+        console.log("Setting name to %s", value);
+        this._name = value;
+    }
 };
 
 // This code can also be written as
 
 var person1 = {
-	_name: "Bejoy"
+    _name: "Bejoy"
 };
 
 Object.defineProperty(person1, "name", {
-	get: function() {
-		console.log("Reading name");
-		return this._name;
-	},
-	set: function() {
-		console.log("Setting name to %s", value);
-		this._name = value;
-	},
-	enumerable: true,
-	configurable: true
+    get: function() {
+        console.log("Reading name");
+        return this._name;
+    },
+    set: function() {
+        console.log("Setting name to %s", value);
+        this._name = value;
+    },
+    enumerable: true,
+    configurable: true
 });
 
 // The advantage of using accessor property attributes instead of object literal notation to 
@@ -332,31 +328,31 @@ var person1 = {};
 
 Object.defineProperties(person1, {
 
-	// data property to store data
-	_name: {
-		value: "Nicholas",
-		enumerable: true,
-		configurable: true,
-		writable: true
-	},
+    // data property to store data
+    _name: {
+        value: "Nicholas",
+        enumerable: true,
+        configurable: true,
+        writable: true
+    },
 
-	// accessor property 
-	name: {
-		get: function() {
-			console.log("Reading name");
-			return this._name;
-		},
-		set: function(value) {
-			console.log("Setting name to %s", value);
-			this._name = value;
-		},
-		enumerable: true,
-		configurable: true
-	}
+    // accessor property 
+    name: {
+        get: function() {
+            console.log("Reading name");
+            return this._name;
+        },
+        set: function(value) {
+            console.log("Setting name to %s", value);
+            this._name = value;
+        },
+        enumerable: true,
+        configurable: true
+    }
 });
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 };
 
 var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
@@ -364,9 +360,9 @@ var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
 console.log(descriptor);
 
 // Preventing Object Modification
-	// Preventing Extensions
+// Preventing Extensions
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 };
 
 console.log(Object.isExtensible(person1)); // true
@@ -376,22 +372,21 @@ Object.preventExtensions(person1);
 console.log(Object.isExtensible(person1)); // false
 
 try {
-	person1.sayName = function() {
-		console.log(this.name);
-	};
+    person1.sayName = function() {
+        console.log(this.name);
+    };
 
-}
-catch(err) {
-	console.log(err); // [TypeError: Can't add property sayName, object is not extensible]
+} catch (err) {
+    console.log(err); // [TypeError: Can't add property sayName, object is not extensible]
 }
 
 console.log("sayName" in person1); // false
 
-	// Sealing Objects
-	// Cannot add new properties, cant remove properties or change their types
+// Sealing Objects
+// Cannot add new properties, cant remove properties or change their types
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 };
 
 console.log(Object.isExtensible(person1)); // true
@@ -404,10 +399,9 @@ console.log(Object.isSealed(person1)); // true
 // adding new properties wont work
 
 try {
-	delete person1.name;	
-}
-catch(err) {
-	console.log(err); // Cannot delete prop name
+    delete person1.name;
+} catch (err) {
+    console.log(err); // Cannot delete prop name
 }
 
 var descriptor = Object.getOwnPropertyDescriptor(person1, "name");
@@ -418,11 +412,11 @@ person1.name = "George";
 
 console.log(person1.name); // George 
 
-	// Freezing Objects
-	// Everything is frozen. Isn't extensible, configurable or writable (Oh! but is enumerable)
+// Freezing Objects
+// Everything is frozen. Isn't extensible, configurable or writable (Oh! but is enumerable)
 
 var person1 = {
-	name: "Bejoy"
+    name: "Bejoy"
 }
 
 Object.freeze(person1);
@@ -436,7 +430,7 @@ console.log(descriptor);
 // Constructor names should begin with capital letter.
 
 function Person() {
-	// intentionally empty 
+    // intentionally empty 
 }
 
 var person1 = new Person();
@@ -458,10 +452,10 @@ console.log(person1.constructor); // Person
 // constructor with properties
 
 function Person(name) {
-	this.name = name;
-	this.getName = function() {
-		console.log("line 459", this.name);
-	}
+    this.name = name;
+    this.getName = function() {
+        console.log("line 459", this.name);
+    }
 }
 
 // There’s no need to return a value from the function because the new operator 
@@ -472,22 +466,22 @@ var person2 = new Person("George");
 
 console.log(person1); // Person { name: 'Bejoy', getName: [Function] }
 
-person1.getName(); 
+person1.getName();
 
 function PersonWithObjectReturn(name) {
-	this.name = name;
-	this.getName = function() {
-		console.log(this.name);
-	}
-	return {};
+    this.name = name;
+    this.getName = function() {
+        console.log(this.name);
+    }
+    return {};
 }
 
 function PersonWithPrimitiveReturn(name) {
-	this.name = name;
-	this.getName = function() {
-		 console.log(this.name);
-	}
-	return 2;
+    this.name = name;
+    this.getName = function() {
+        console.log(this.name);
+    }
+    return 2;
 }
 
 // You can also explicitly call return inside of a constructor. If the returned value
@@ -505,30 +499,29 @@ console.log(person4.name); // I will survive any odds
 
 function Person(name) {
 
-	Object.defineProperty(this, "name", {
-		get: function() {
-			return name;
-		},
-		set: function(newName) {
-			name = newName;
-		},
-		enumerable: true,
-		configurable: true
-	});
+    Object.defineProperty(this, "name", {
+        get: function() {
+            return name;
+        },
+        set: function(newName) {
+            name = newName;
+        },
+        enumerable: true,
+        configurable: true
+    });
 
-	this.getName = function() {
-		console.log(this.name);
-	};
+    this.getName = function() {
+        console.log(this.name);
+    };
 }
 
 // always call constructors with new, otherwise risk changing the global object
 // instead of creating a new one.
 
 try {
-	var person1 = Person("Bejoy"); // missing "new"
-}
-catch(err) {
-	console.log(err); // Object.defineProperty called on non-object.
+    var person1 = Person("Bejoy"); // missing "new"
+} catch (err) {
+    console.log(err); // Object.defineProperty called on non-object.
 }
 
 // An error occurs if you call the Person constructor in strict mode without using new .
@@ -541,7 +534,7 @@ catch(err) {
 // Refer mdn for definition 
 
 var book = {
-	title: "the principles"
+    title: "the principles"
 };
 
 console.log("title" in book); // true
@@ -552,7 +545,7 @@ console.log(Object.prototype.hasOwnProperty("hasOwnProperty")); // true
 
 // Identifying a prototype property
 function hasPrototypeProperty(object, name) {
-	return name in object && !object.hasOwnProperty(name);
+    return name in object && !object.hasOwnProperty(name);
 }
 
 console.log(hasPrototypeProperty(book, "title")); // false
@@ -563,7 +556,7 @@ console.log(hasPrototypeProperty(book, "hasOwnProperty")); // true
 var object = {};
 var prototype = Object.getPrototypeOf(object);
 
-console.log(prototype === Object.prototype);  // true
+console.log(prototype === Object.prototype); // true
 
 // checking if one object is property for another
 
@@ -584,7 +577,7 @@ var object = {};
 console.log(object.toString()); // "[object Object]"
 
 object.toString = function() {
-	return "[object Custom]";
+    return "[object Custom]";
 };
 
 console.log(object.toString()); // "[object Custom]"
@@ -602,11 +595,11 @@ console.log(object.toString()); // "[object Object]"
 // Using Prototypes with Constructors
 
 function PersonWithProto(name) {
-	this.name = name;
+    this.name = name;
 }
 
 PersonWithProto.prototype.sayName = function() {
-	console.log(this.name);
+    console.log(this.name);
 };
 
 var person1 = new PersonWithProto("Bejoy");
@@ -619,11 +612,11 @@ person1.sayName(); // "Bejoy"
 // be careful with reference types 
 
 function PersonWithRefType(name) {
-	this.name = name;
+    this.name = name;
 }
 
 PersonWithRefType.prototype.sayName = function() {
-	console.log(this.name);
+    console.log(this.name);
 };
 
 PersonWithRefType.prototype.favorites = [];
@@ -642,17 +635,17 @@ console.log(person2.favorites); // ['pizza', 'chocolate']
 // add multiple prototype with object literal
 
 function PersonWithObjLiteral(name) {
-	this.name = name;
+    this.name = name;
 }
 
 PersonWithObjLiteral.prototype = {
-	sayName: function() {
-		console.log(this.name);
-	},
+    sayName: function() {
+        console.log(this.name);
+    },
 
-	toString: function() {
-		return "[Person " + this.name + "]";
-	}
+    toString: function() {
+        return "[Person " + this.name + "]";
+    }
 };
 
 var person1 = new PersonWithObjLiteral("Bejoy");
@@ -676,19 +669,19 @@ console.log(person1.constructor === Object); // true
 */
 
 function PersonWithConstructor(name) {
-	this.name = name;
+    this.name = name;
 }
 
 PersonWithConstructor.prototype = {
-	constructor: PersonWithConstructor,
+    constructor: PersonWithConstructor,
 
-	sayName: function() {
-		console.log(this.name);
-	},
+    sayName: function() {
+        console.log(this.name);
+    },
 
-	toString: function() {
-		return "[Person" + this.name + "]";
-	}
+    toString: function() {
+        return "[Person" + this.name + "]";
+    }
 };
 
 var person1 = new PersonWithConstructor('Bejoy');
@@ -711,19 +704,19 @@ console.log(person1.constructor === Object); // false
 // Any changes to the prototype are immediately available on any instance referencing it.
 
 function PersonWithProtoChange(name) {
-	this.name = name;
+    this.name = name;
 }
 
 PersonWithProtoChange.prototype = {
-	constructor: Person,
+    constructor: Person,
 
-	sayName: function() {
-		console.log(this.name);
-	},
+    sayName: function() {
+        console.log(this.name);
+    },
 
-	toString: function() {
-		return "[Person" + this.name + "]";
-	}
+    toString: function() {
+        return "[Person" + this.name + "]";
+    }
 };
 
 var person1 = new PersonWithProtoChange("Bejoy");
@@ -732,10 +725,10 @@ console.log("sayHi" in person1); // false
 
 // add a new method
 PersonWithProtoChange.prototype.sayHi = function() {
-	console.log("Hi");
+    console.log("Hi");
 }
 
-person1.sayHi();  // outputs "Hi"
+person1.sayHi(); // outputs "Hi"
 
 // effects on sealed and frozen objects
 
@@ -744,7 +737,7 @@ var person1 = new PersonWithProtoChange("Bejoy");
 Object.freeze(person1);
 
 PersonWithProtoChange.prototype.sayYolo = function() {
-	console.log("YOLO");
+    console.log("YOLO");
 }
 
 person1.sayYolo(); // "YOLO"
@@ -752,12 +745,12 @@ person1.sayYolo(); // "YOLO"
 // ex of built-in Object Prototypes
 
 Array.prototype.sum = function() {
-	return this.reduce(function(previous, current) {
-		return previous + current;
-	});
+    return this.reduce(function(previous, current) {
+        return previous + current;
+    });
 };
 
-var numbers = [1,2,3,4,5];
+var numbers = [1, 2, 3, 4, 5];
 
 var result = numbers.sum();
 
@@ -770,7 +763,7 @@ console.log(result); // 15
 // All objects inherit from Object.prototype
 
 var book = {
-	title: "The principles"
+    title: "The principles"
 }
 
 var prototype = Object.getPrototypeOf(book);
@@ -788,7 +781,7 @@ console.log(prototype === Object.prototype);
 // Shouldn't be done
 
 Object.prototype.add = function(value) {
-	return this + value;
+    return this + value;
 }
 
 console.log(book.add(4)); // "[object Object]5"
@@ -802,51 +795,51 @@ console.log("title".add("end")); // "titleend"
 var empty = {};
 
 for (var property in empty) {
-	console.log(property); // outputs add
+    console.log(property); // outputs add
 }
 
 // its recommended to use hasOwnProperty() in for-in loops all the time
 
 for (var property in empty) {
-	if (empty.hasOwnProperty(property)) {
-		console.log(property);
-	}
+    if (empty.hasOwnProperty(property)) {
+        console.log(property);
+    }
 }
 
 // Object Inheritance
 // set new object's [[Prototype]] to object from which we have to inherit
 
 var book = {
-	title: "The Principles"
+    title: "The Principles"
 }
 
 // is same as
 
 var book = Object.create(Object.prototype, {
-					title: {
-						configurable: true,
-						enumerable: true,
-						value: "The Principles",
-						writable: true
-					}
-			});
+    title: {
+        configurable: true,
+        enumerable: true,
+        value: "The Principles",
+        writable: true
+    }
+});
 
 // inherting from other objects
 
 var person1 = {
-	name: "Bejoy",
-	sayName: function() {
-		console.log(this.name);
-	}
+    name: "Bejoy",
+    sayName: function() {
+        console.log(this.name);
+    }
 }
 
 var person2 = Object.create(person1, {
-	name: {
-		configurable: true,
-		enumerable: true,
-		value: "George",
-		writable: true
-	}
+    name: {
+        configurable: true,
+        enumerable: true,
+        value: "George",
+        writable: true
+    }
 });
 
 person1.sayName(); // "Bejoy"
@@ -875,52 +868,52 @@ console.log("valueOf" in objWithNullProto); // false
 
 // you write this
 function YourConstructor() {
-	// initialization
+    // initialization
 }
 
 // JavaScript engine does this for you behind the scenes
 
 YourConstructor.prototype = Object.create(Object.prototype, {
-								constructor: {
-									configurable: true,
-									enumerable: true,
-									value: YourConstructor,
-									writable: true
-								}
-							});
+    constructor: {
+        configurable: true,
+        enumerable: true,
+        value: YourConstructor,
+        writable: true
+    }
+});
 
 // prototype property is writable, can change the prototype chain by overwriting it.
 
 function Rectangle(length, width) {
-	this.length = length;
-	this.width = width;
+    this.length = length;
+    this.width = width;
 }
 
 Rectangle.prototype.getArea = function() {
-	return this.length * this.width;
+    return this.length * this.width;
 };
 
 Rectangle.prototype.toString = function() {
-	return "[Rectangle " + this.length + "x" + this.width + "]";
+    return "[Rectangle " + this.length + "x" + this.width + "]";
 };
 
 // inherits from Rectangle
 
 function Square(size) {
-	this.length = size;
-	this.width = size;
+    this.length = size;
+    this.width = size;
 }
 
 Square.prototype = new Rectangle();
 Square.prototype.constructor = Square;
 Square.prototype.toString = function() {
-	return "[Square " + this.length + "x" + this.width + "]";
+    return "[Square " + this.length + "x" + this.width + "]";
 }
 
 var rect = new Rectangle(5, 10);
 var square = new Square(6);
 
-console.log(rect.getArea());  // 50
+console.log(rect.getArea()); // 50
 console.log(square.getArea()); // 36
 
 console.log(rect.toString()); // "[Rectangle 5x10]"
@@ -928,31 +921,31 @@ console.log(square.toString()); // "[Square 6x6]"
 
 console.log(rect instanceof Rectangle); // true
 console.log(rect instanceof Object); // true
-	
+
 console.log(square instanceof Square); // true
 console.log(square instanceof Rectangle); // true
 console.log(square instanceof Object); // true
- 
- // the above example can be simplified by using Object.create()
- 
+
+// the above example can be simplified by using Object.create()
+
 function Square2(size) {
-	this.length = size;
-	this.width = size;
+    this.length = size;
+    this.width = size;
 }
 
 // inherits from Rectangle
 
 Square2.prototype = Object.create(Rectangle.prototype, {
-						constructor: {
-							configurable: true,
-							enumerable: true,
-							value: Square,
-							writable: true
-						}
-					});
+    constructor: {
+        configurable: true,
+        enumerable: true,
+        value: Square,
+        writable: true
+    }
+});
 
 Square2.prototype.toString = function() {
-	return "[Square " + this.length + "x" + this.width + "]";
+    return "[Square " + this.length + "x" + this.width + "]";
 }
 
 // In this version of the code, Square.prototype is overwritten with a
@@ -966,34 +959,34 @@ Square2.prototype.toString = function() {
 // Constructor Stealing
 
 function Rectangle(length, width) {
-	this.length = length;
-	this.width = length;
+    this.length = length;
+    this.width = length;
 }
 
 Rectangle.prototype.getArea = function() {
-	return this.length * this.width;
+    return this.length * this.width;
 };
 
 Rectangle.prototype.toString = function() {
-	return "[Rectangle " + this.length + "x" + this.width + "]"; 
+    return "[Rectangle " + this.length + "x" + this.width + "]";
 };
 
 // inherits from Rectangle
 function Square3(size) {
-	Rectangle.call(this, size, size);
+    Rectangle.call(this, size, size);
 }
 
 Square3.prototype = Object.create(Rectangle.prototype, {
-						constructor: {
-							configurable: true,
-							enumerable: true,
-							value: square,
-							writable: true
-						}
-					});
+    constructor: {
+        configurable: true,
+        enumerable: true,
+        value: square,
+        writable: true
+    }
+});
 
 Square3.prototype.toString = function() {
-	return "[Square" + this.length + "x" + this.width + "]";
+    return "[Square" + this.length + "x" + this.width + "]";
 }
 
 var square = new Square(6);
@@ -1013,28 +1006,320 @@ console.log(square.getArea()); // 36
 // can directly access methods in supertype's prototype using either call() or apply()
 
 function Rectangle(length, width) {
-	this.length = length;
-	this.width = width; 
+    this.length = length;
+    this.width = width;
 }
 
 Rectangle.prototype.getArea = function() {
-	return this.length * this.width;
+    return this.length * this.width;
 };
 
 Rectangle.prototype.toString = function() {
-	return "[Rectangle " + this.length + "x" + this.height + "]";
+    return "[Rectangle " + this.length + "x" + this.height + "]";
 };
 
 // inherits from Rectangle
 
 function Square4(size) {
-	Rectangle.call(this, size, size);
+    Rectangle.call(this, size, size);
 }
 
 // call the supertype method
 
 Square4.prototype.toString = function() {
-	var text = Rectangle.prototype.toString.call(this);
-	return text.replace("Rectangle", "Square");
+    var text = Rectangle.prototype.toString.call(this);
+    return text.replace("Rectangle", "Square");
 }
 
+// Object Patterns
+
+// Private and Privileged Members
+
+// The Module Pattern - Use of IIFE (immediately invoked function expression)
+
+var yourObject = (function() {
+
+    // private data variables
+
+    return {
+        // public method and properties
+    };
+}());
+
+// The module pattern allows to use regular variables as de facto
+// object properties that aren’t exposed publicly. This can be accomplished by
+// creating closure functions as object methods.
+
+var person = (function() {
+
+    var age = 25;
+
+    return {
+        name: "Bejoy",
+
+        getAge: function() {
+            return age;
+        },
+
+        growOlder: function() {
+            age++;
+        }
+    };
+}());
+
+console.log(person.name); // "Bejoy"
+console.log(person.getAge()); // 25
+
+person.age = 100;
+console.log(person.getAge()); // 25
+
+person.growOlder();
+console.log(person.getAge()); // 26
+
+// Reaveling module pattern - a variation of module pattern
+
+var person = (function() {
+    var age = 25;
+
+    function getAge() {
+        return age;
+    }
+
+    function growOlder() {
+        age++;
+    }
+
+    return {
+        name: "Bejoy",
+        getAge: getAge,
+        growOlder: growOlder
+    };
+}());
+
+// Private Members for Constructors
+
+function PersonPMC(name) {
+
+    // define a variable only accessible inside of the PersonPMC constructor
+    var age = 25;
+
+    this.name = name;
+
+    this.getAge = function() {
+        return age;
+    };
+
+    this.growOlder = function() {
+        age++;
+    };
+}
+
+var person = new PersonPMC("Bejoy");
+
+console.log(person.name); // "Bejoy"
+console.log(person.getAge()); // 25
+
+person.age = 100;
+console.log(person.getAge()); // 25
+
+person.growOlder();
+console.log(person.getAge()); // 26
+
+// If you want private data to be shared across all instances (as if it wereon the prototype), 
+// you can use a hybrid approach that looks like the module pattern but uses a constructor:
+
+var Person = (function() {
+
+    // everyone share the same age
+    var age = 25;
+
+    function InnerPerson(name) {
+        console.log("this is called", name);
+        this.name = name;
+    }
+
+    InnerPerson.prototype.getAge = function() {
+        return age;
+    };
+
+    InnerPerson.prototype.growOlder = function() {
+        age++;
+    };
+
+    return InnerPerson;
+}());
+
+var person1 = new Person("Bejoy");
+
+console.log(person1.name); // "Bejoy"
+console.log(person1.getAge()); // 25
+
+person1.growOlder();
+console.log(person1.getAge()); // 26
+
+// Pseudoinheritance through Mixins
+
+// Mixins occur when one object acquires the properties of another without modify­ing the prototype chain.
+
+// The first object (a receiver) actually receives the properties of the second object (the
+// supplier) by copying those properties directly.
+
+function mixin(receiver, supplier) {
+    for (var property in supplier) {
+        if (supplier.hasOwnProperty(property)) {
+            receiver[property] = supplier[property]
+        }
+    }
+    return receiver;
+}
+
+// This pattern is used frequently for adding new behaviors to JavaScript objects that 
+// already exist on other objects.
+
+function EventTarget() {}
+
+EventTarget.prototype = {
+
+    constructor: EventTarget,
+
+    addListener: function(type, listener) {
+        // create an array if it dones't exist
+        if (!this.hasOwnProperty("_listeners")) {
+            this._listeners = [];
+        }
+
+        if (typeof this._listeners[type] == "undefined") {
+            this._listeners[type] = [];
+        }
+
+        this._listeners[type].push(listener);
+    },
+
+    fire: function(event) {
+        if (!event.target) {
+            event.target = this;
+        }
+
+        if (!event.type) {
+            throw new Error("Event object missing 'type' prototype.");
+        }
+
+        if (this._listeners && this._listeners[event.type] instanceof Array) {
+            var listeners = this._listeners[event.type];
+            for (var i = 0, len = listeners.length; i < len; i++) {
+                console.log(len);
+                console.log("1219", listeners[i]);
+                console.log("1220", this);
+                listeners[i].call(this, event);
+            }
+        }
+    },
+
+    removeListener: function(type, listener) {
+        if (this._listeners && this._listeners[type] instanceof Array) {
+            var listeners = this._listeners[type];
+            for (var i = 0, len = listeners.length; i < len; i++) {
+                if (listeners[i] === listener) {
+                    listeners.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }
+
+}
+
+var target = new EventTarget();
+
+target.addListener("message", function(event) {
+    console.log("Message is " + event.data);
+})
+
+target.fire({
+    type: "message",
+    data: "Hello world!"
+});
+
+// different object that also supports events
+
+var person = new EventTarget();
+person.name = "Bejoy";
+person.sayName = function() {
+    console.log(this.name);
+    this.fire({ type: "namesaid", name: name });
+};
+
+// but this means that person is an instace of EventTarget instead of Object
+// an alternative through pseudoclassical inheritance
+
+function PersonPI(name) {
+    this.name = name;
+}
+
+PersonPI.prototype = Object.create(EventTarget.prototype);
+PersonPI.prototype.constructor = PersonPI;
+
+PersonPI.prototype.sayName = function() {
+    console.log(this.name);
+    this.fire({ type: "namesaid", name: name });
+};
+
+var person = new PersonPI("Bejoy");
+
+console.log(person instanceof PersonPI); // true
+console.log(person instanceof EventTarget); // true
+
+// even this approach is not succinct and relationship doesn't make sense
+// person is a type of event target?
+
+// using a mixin instead - Reduce the amout of code
+
+function PersonMix(name) {
+    this.name = name;
+}
+
+// mixin is already defined
+mixin(PersonMix.prototype, new EventTarget());
+
+mixin(PersonMix.prototype, {
+    constructor: PersonMix,
+
+    sayName: function() {
+        console.log(this.name);
+        this.fire({ type: "namesaid", name: name });
+    }
+});
+
+var person = new PersonMix("Bejoy");
+
+console.log(person instanceof PersonMix); // true
+console.log(person instanceof EventTarget); // false
+
+// inheriting objects' properties, without constructor of pesudoclassical inheritance
+
+var person = mixin(new EventTarget(), {
+
+    name: "Bejoy",
+
+    sayName: function() {
+        console.log(this.name);
+        this.fire({ type: "namesaid", name: name });
+    }
+
+});
+
+// by the use of mixins the accessor properties on the supplier becomes data properties on receiver
+
+var person = mixin(new EventTarget(), {
+
+    get name() {
+        return "Bejoy"
+    },
+
+    sayName: function() {
+        console.log(this.name);
+        this.fire({ type: "Namesaid", name: name });
+    }
+});
+
+console.log(person.name);
