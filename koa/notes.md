@@ -34,11 +34,12 @@ app.use = function(fn){
 # koa-better-body:
   This is used for parsing text, buffer, json, json patch, json api, csp-report, multipart, form and urlencoded bodies.
 
+  ```javascript
   var body = require('koa-better-body');
 
   router.post('/upload', body(), function * (next) {
     console.log(this.request.body)    // if buffer or text
     console.log(this.request.files)   // if multipart or urlencoded
     console.log(this.request.fields)  // if json
-    ----------
+    ```
 })
