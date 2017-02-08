@@ -1,3 +1,4 @@
+use ggupta;
 db.moviesScratch.insertMany(
     [
         {
@@ -32,6 +33,6 @@ db.moviesScratch.insertMany(
         }
     ],
     {
-        "ordered": false 
+        "ordered": false
     }
 );

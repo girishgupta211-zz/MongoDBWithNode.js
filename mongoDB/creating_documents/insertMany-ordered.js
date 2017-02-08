@@ -1,3 +1,4 @@
+use ggupta;
 db.moviesScratch.insertMany(
     [
         {
