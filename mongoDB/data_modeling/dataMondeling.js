@@ -201,3 +201,9 @@ name : 'Prof K.S. Signh'
 
 Find all the teachers that a student have
 Find all the students having a perticular teacher
+
+
+Befini
+
+Improved read performance
+one round trip to DB
