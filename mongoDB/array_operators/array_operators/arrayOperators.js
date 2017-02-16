@@ -12,5 +12,8 @@ db.movieDetails.find({ boxOffice: { country: "UK", revenue: { $gt: 15 } } })
 
 db.movieDetails.find({ boxOffice: {$elemMatch: { country: "UK", revenue: { $gt: 15 } } } })
 
+Refer here to understand difference between elemMatch and exact match
+http://stackoverflow.com/questions/42154286/fetch-data-from-array-in-mongodb-with-elemmatch/
 
-
+Refer Here:
+https://docs.mongodb.com/manual/tutorial/query-array-of-documents/
