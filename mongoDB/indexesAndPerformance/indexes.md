@@ -137,3 +137,18 @@ WriteResult({ "nRemoved" : 2 })
 Please provide the mongo shell command to create a unique index on student_id, class_id, ascending for the collection students.
 
 > db.stuff.createIndex({ "student_id" : 1 , "class_id" :1  } , { unique : true })
+
+
+
+"executionSuccess" : true,
+  "nReturned" : 10,
+  "executionTimeMillis" : 2455,
+  "totalKeysExamined" : 0,
+  "totalDocsExamined" : 5859312,
+  "executionStages" : {
+    "stage" : "COLLSCAN",
+    "filter" : {
+      "student_id" : {
+        "$eq" : 2
+      }
+    },
