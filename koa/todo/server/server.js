@@ -2,26 +2,52 @@ const koa = require('koa'),
     parser = require('koa-better-body'),
     router = require('koa-router'),
     _ = require('lodash'),
-    { ObjectID } = require('mongodb'),
-    { Todo } = require('./models/todo'),
-    { mongoose } = require('./db/mongoose');
+    {
+        ObjectID
+    } = require('mongodb'),
+    {
+        Todo
+    } = require('./models/todo'),
+    {
+        mongoose
+    } = require('./db/mongoose');
 
 let app = koa();
 
 // This is used to get parse request body such a json data in post request
 app.use(parser());
 
-let route = new router({ prefix: '/v1' });
+let route = new router({
+    prefix: '/v1'
+});
+
+route.post('/todo', addTodo);
 route.get('/todo', getTodo);
 route.get('/todo/:id', getTodoById)
-route.post('/todo', addTodo);
 route.del('/todo/:id', deleteTodo);
 route.patch('/todo/:id', updateTodo);
+
 
 
 app.use(route.routes());
 if (!module.parent) app.listen(3000);
 console.log('Hello World is Running on http://localhost:3000/');
+
+
+function* addTodo(next) {
+    try {
+        console.log("this.request.fields", this.request.fields)
+        let todoReq = this.request.fields;
+        let res = yield(new Todo(todoReq)).save();
+        this.status = 200;
+        this.body = res;
+        yield next;
+    } catch (err) {
+        console.log('Error while adding a todo', err);
+        this.body = "Error in todo post rquest";
+        this.status = 400;
+    }
+}
 
 
 function* getTodoById(next) {
@@ -41,7 +67,9 @@ function* getTodoById(next) {
         }
 
         this.status = 200;
-        this.body = { 'data': res };
+        this.body = {
+            'data': res
+        };
         yield next;
     } catch (err) {
         console.log('Error while getting todo', err);
@@ -57,7 +85,9 @@ function* getTodo(next) {
     try {
         let res = yield Todo.find({}).exec();
         this.status = 200;
-        this.body = { 'data': res };
+        this.body = {
+            'data': res
+        };
         yield next;
     } catch (err) {
         console.log('Error while Getting  todo', err);
@@ -68,21 +98,6 @@ function* getTodo(next) {
 
 
 
-
-function* addTodo(next) {
-    try {
-        console.log("this.request.fields", this.request.fields)
-        let todoReq = this.request.fields;
-        let res = yield(new Todo(todoReq)).save();
-        this.status = 200;
-        this.body = res;
-        yield next;
-    } catch (err) {
-        console.log('Error while adding a todo', err);
-        this.body = "Error in todo post rquest";
-        this.status = 400;
-    }
-}
 
 
 
@@ -101,7 +116,7 @@ function* deleteTodo(next) {
             this.status = 404;
             return;
         }
-        //console.log("todoStruct" , todoStruct);   
+        console.log("todoStruct", todoStruct);
         this.body = todoStruct;
         this.status = 200;
         yield next;
@@ -115,13 +130,13 @@ function* deleteTodo(next) {
 function* updateTodo(next) {
     try {
         let id = this.params.id;
-        let body = _.pick(this.request.fields, ["text", "completed"]);
         if (!ObjectID.isValid(id)) {
             this.status = 404;
             this.body = 'id is not valid ObjectId';
             return;
         }
 
+        let body = _.pick(this.request.fields, ["text", "completed"]);
         if (_.isBoolean(body.completed) && body.completed) {
             body.completedAt = new Date().getTime();
         } else {
@@ -131,8 +146,14 @@ function* updateTodo(next) {
 
         console.log(body);
         // If we do not pass {new: true}, this will return origional document. After passing {new : true}, it returns updated document.
-        let res = yield Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).exec();
-        this.body = { res };
+        let res = yield Todo.findByIdAndUpdate(id, {
+            $set: body
+        }, {
+            new: true
+        }).exec();
+        this.body = {
+            res
+        };
         console.log(res);
 
     } catch (err) {
@@ -142,7 +163,7 @@ function* updateTodo(next) {
     }
 }
 
-module.exports.app =  app;
+module.exports.app = app;
 /*  Curl request for post*/
 // curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "text" : "Request from postman completed" , "completed": false } ' "http://localhost:3000/v1/todo"
 
