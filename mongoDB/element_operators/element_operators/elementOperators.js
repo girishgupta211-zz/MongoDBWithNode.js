@@ -1,6 +1,6 @@
-db.moviesDetails.find({ "tomato.meter": { $exists: true } })
+db.movieDetails.find({ "tomato.meter": { $exists: true } } , { tomato :1 })
 
-db.moviesDetails.find({ "tomato.meter": { $exists: false } })
+db.movieDetails.find({ "tomato.meter": { $exists: false } } , { tomato :1 })
 
 // Value of $type may be either a BSON type number or the string alias
 // See https://docs.mongodb.org/manual/reference/operator/query/type
