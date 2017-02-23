@@ -321,6 +321,18 @@ You can specify a partialFilterExpression option for all MongoDB index types.
 
 To use the partial index, a query must contain the filter expression (or a modified filter expression that specifies a subset of the filter expression) as part of its query condition.
 
+Suppose you are having below restaurants data:
+
+```
+{
+   "_id" : ObjectId("5641f6a7522545bc535b5dc9"),      
+   "cuisine" : "Italian",
+   "rating" : 6
+   "name" : "Morris Park Bake Shop",
+   "restaurant_id" : "30075445"
+}
+```
+
 For example, given the following index:
 
 > db.restaurants.createIndex(
@@ -332,15 +344,17 @@ The following query can use the index since the query predicate includes the con
 
 > db.restaurants.find( { cuisine: "Italian", rating: { $gte: 8 } } )
 
-However, the following query cannot use the partial index on the cuisine field because using the index results in an incomplete result set. Specifically, the query predicate includes the condition rating: { $lt: 8 } while the index has the filter rating: { $gt: 5 }. That is, the query { cuisine: "Italian", rating: { $lt: 8 } } matches more documents (e.g. an Italian restaurant with a rating equal to 1) than are indexed.
+However, the following query cannot use the partial index on the cuisine field because using the index results in an incomplete result set. Specifically, the query predicate includes the condition rating: { $lt: 8 } while the index has the filter rating: { $gt: 5 }.
+That is, the query { cuisine: "Italian", rating: { $lt: 8 } } matches more documents (e.g. an Italian restaurant with a rating equal to 1) than are indexed.
 
 > db.restaurants.find( { cuisine: "Italian", rating: { $lt: 8 } } )
+
 Similarly, the following query cannot use the partial index because the query predicate does not include the filter expression and using the index would return an incomplete result set.
 
 > db.restaurants.find( { cuisine: "Italian" } )
-Comparison with the sparse Index
 
-TIP
+### Comparison with the sparse Index
+
 Partial indexes represent a superset of the functionality offered by sparse indexes and should be preferred over sparse indexes.
 Partial indexes offer a more expressive mechanism than Sparse Indexes indexes to specify which documents are indexed.
 
@@ -348,10 +362,12 @@ Sparse indexes selects documents to index solely based on the existence of the i
 
 Partial indexes determine the index entries based on the specified filter. The filter can include fields other than the index keys and can specify conditions other than just an existence check. For example, a partial index can implement the same behavior as a sparse index:
 
-> db.contacts.createIndex(
+```
+db.contacts.createIndex(
    { name: 1 },
    { partialFilterExpression: { name: { $exists: true } } }
 )
+```
 
 This partial index supports the same queries as a sparse index on the name field.
 
@@ -361,6 +377,7 @@ However, a partial index can also specify filter expressions on fields other tha
    { name: 1 },
    { partialFilterExpression: { email: { $exists: true } } }
 )
+
 For the query optimizer to choose this partial index, the query predicate must include a non-null match on the email field as well as a condition on the name field.
 
 For example, the following query can use the index:
@@ -419,6 +436,7 @@ db.restaurants.createIndex(
 Then, the following query on the restaurants collection uses the partial index to return the restaurants in the Bronx with rating.grade equal to A:
 
 > db.restaurants.find( { borough: "Bronx", 'rating.grade': "A" } )
+
 However, the following query cannot use the partial index because the query expression does not include the rating.grade field:
 
 > db.restaurants.find( { borough: "Bronx", cuisine: "Bakery" } )
@@ -432,24 +450,32 @@ For example, a collection users contains the following documents:
 { "_id" : ObjectId("56424f1efa0358a27fa1f99a"), "username" : "david", "age" : 29 }
 { "_id" : ObjectId("56424f37fa0358a27fa1f99b"), "username" : "amanda", "age" : 35 }
 { "_id" : ObjectId("56424fe2fa0358a27fa1f99c"), "username" : "rajiv", "age" : 57 }
+```
+
 The following operation creates an index that specifies a unique constraint on the username field and a partial filter expression age: { $gte: 21 }.
 
+```
 db.users.createIndex(
    { username: 1 },
    { unique: true, partialFilterExpression: { age: { $gte: 21 } } }
 )
-
 ```
+
+
 The index prevents the insertion of the following documents since documents already exist with the specified usernames and the age fields are greater than 21:
 
 > db.users.insert( { username: "david", age: 27 } )
+
 > db.users.insert( { username: "amanda", age: 25 } )
+
 > db.users.insert( { username: "rajiv", age: 32 } )
 
 However, the following documents with duplicate usernames are allowed since the unique constraint only applies to documents with age greater than or equal to 21.
 
 > db.users.insert( { username: "david", age: 20 } )
+
 > db.users.insert( { username: "amanda" } )
+
 > db.users.insert( { username: "rajiv", age: null } )
 
 

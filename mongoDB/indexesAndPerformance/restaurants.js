@@ -13,7 +13,7 @@
    "cuisine" : "Bakery",
    "rating" : { "date" : ISODate("2014-03-03T00:00:00Z"),
                 "grade" : "A",
-                "score" : 2
+                "score" : 4
               },
    "name" : "Morris Park Bake Shop",
    "restaurant_id" : "30075445"
