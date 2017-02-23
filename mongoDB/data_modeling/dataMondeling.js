@@ -103,14 +103,14 @@ If size of resume more than 16 M then keep it in different colletion
 
 
 
-It's also worth noting that you might decide to keep the resume separate from the employee
+Its also worth noting that you might decide to keep the resume separate from the employee
  document if the resume needs to exist when no employee exists for that resume.
  That is, perhaps you first get a resume and they later become an employee, or not.
 
 
 
 
-What's a good reason you might want to keep two documents that are related to each other one-to-one in separate collections?
+What is a good reason you might want to keep two documents that are related to each other one-to-one in separate collections?
 Check all that apply.
 Because you want to allow atomic update of both documents at once.
 To reduce the working set size of your application.
@@ -202,8 +202,7 @@ name : 'Prof K.S. Signh'
 Find all the teachers that a student have
 Find all the students having a perticular teacher
 
-
-Befini
+//Befinits of embedding
 
 Improved read performance
 one round trip to DB
