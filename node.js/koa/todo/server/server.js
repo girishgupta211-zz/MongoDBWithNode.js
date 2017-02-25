@@ -164,6 +164,7 @@ function* updateTodo(next) {
 }
 
 module.exports.app = app;
+module.exports = route;
 /*  Curl request for post*/
 // curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "text" : "Request from postman completed" , "completed": false } ' "http://localhost:3000/v1/todo"
 
