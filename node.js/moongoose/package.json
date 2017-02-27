@@ -1,0 +1,20 @@
+{
+  "name": "moongoose",
+  "version": "1.0.0",
+  "description": "This is all about mongoose connection",
+  "main": "kitty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongoose",
+    "nodejs"
+  ],
+  "author": "Girish'",
+  "license": "ISC",
+
+ "dependencies": {
+    "mongoose": "^4.5.10"
+  }
+
+}
