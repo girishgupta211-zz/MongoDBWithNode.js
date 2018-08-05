@@ -110,6 +110,9 @@ sayNameForAll.apply(person1, ["person1"]); // outputs "person1: Bejoy"
 // create a function just for person1
 var sayNameForPerson1 = sayNameForAll.bind(person1);
 sayNameForPerson1("person1");
+person1.sayName = sayNameForAll.bind(person1);
+person1.sayName("Hello")
+
 
 // create a function just for person2 with passing the parameter
 var sayNameForPerson2 = sayNameForAll.bind(person2, "person2");
